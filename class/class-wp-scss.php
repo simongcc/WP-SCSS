@@ -102,9 +102,11 @@ class Wp_Scss {
       // For each input file, find matching css file and compile
       foreach ($input_files as $scss_file) {
         $input = $this->scss_dir.$scss_file;
-        $outputName = preg_replace("/\.[^$]*/",".css", $scss_file);
+        $file_info = pathinfo($scss_file);
+        if( isset( $file_info['extension'] ) ) {
+          $outputName = preg_replace("#\." . $file_info['extension'] . "#", ".css", $scss_file);
+        }
         $output = $this->css_dir.$outputName;
-
         compiler($input, $output, $this);
       }
 
@@ -209,7 +211,7 @@ class Wp_Scss {
           wp_register_style(
             $name,
             $uri,
-            array(),
+            array('martfury', 'childe2-style'),
             $ver,
             $media = 'all' );
 
